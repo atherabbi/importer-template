@@ -450,7 +450,7 @@ ${pages.flatMap((page) => LANGS.map((lang) => {
 </urlset>
 `;
 write("sitemap.xml", sitemap);
-write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE}/sitemap.xml\n`);
+write("robots.txt", `User-agent: *\nAllow: /\nDisallow: ${BASE}/admin/\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 // admin screen: connect it to this site's GitHub repository
 function detectRepo() {
@@ -463,15 +463,28 @@ function detectRepo() {
   return "";
 }
 const adminSrc = path.join(ROOT, "admin");
+const COMMIT = (() => {
+  const env = process.env.GITHUB_SHA || process.env.CF_PAGES_COMMIT_SHA || process.env.COMMIT_REF;
+  if (env) return env;
+  try { return execSync("git rev-parse HEAD", { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { return ""; }
+})();
+// The admin screen compares this with the change it just saved, to know when the site is live.
+write("build.json", JSON.stringify({ sha: COMMIT, built: new Date().toISOString() }) + "\n");
 if (fs.existsSync(adminSrc)) {
   const repo = detectRepo();
-  const cfg = fs.readFileSync(path.join(adminSrc, "config.yml"), "utf8")
-    .replaceAll("__REPO__", repo || "OWNER/REPOSITORY").replaceAll("__BRANCH__", process.env.CMS_BRANCH || "main").replaceAll("__SITE_URL__", SITE);
-  write("admin/config.yml", cfg);
-  if (repo) write("admin/index.html", fs.readFileSync(path.join(adminSrc, "index.html"), "utf8"));
-  else {
-    warn("Admin screen is not connected: add the variable CMS_REPO (for example yourname/importer-site) in the hosting settings, then deploy again.");
-    write("admin/index.html", `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Admin not connected</title><body style="font-family:system-ui;max-width:40rem;margin:4rem auto;padding:0 1rem;line-height:1.6"><h1>Admin is not connected yet</h1><p>In your hosting dashboard, add an environment variable named <b>CMS_REPO</b> with the value <b>github-username/repository-name</b>, then deploy the site again.</p></body>`);
+  const branch = process.env.CMS_BRANCH || "main";
+  if (!repo) warn("Admin screen is not connected: add the variable CMS_REPO (for example yourname/importer-site) in the hosting settings, then deploy again.");
+  const appJs = fs.readFileSync(path.join(adminSrc, "app.js"), "utf8"), appCss = fs.readFileSync(path.join(adminSrc, "app.css"), "utf8");
+  const v = crypto.createHash("sha1").update(appJs + appCss).digest("hex").slice(0, 8);
+  write("admin/app.js", appJs);
+  write("admin/app.css", appCss);
+  write("admin/index.html", fs.readFileSync(path.join(adminSrc, "index.html"), "utf8").replace('href="app.css"', `href="app.css?v=${v}"`).replace('src="app.js"', `src="app.js?v=${v}"`));
+  write("admin/site.json", JSON.stringify({ repo, branch, api: process.env.CMS_API || "https://api.github.com", site_url: SITE }) + "\n");
+  // Backup editor (Sveltia CMS), kept at /admin/classic/
+  if (fs.existsSync(path.join(adminSrc, "classic"))) {
+    write("admin/classic/index.html", fs.readFileSync(path.join(adminSrc, "classic/index.html"), "utf8"));
+    write("admin/classic/config.yml", fs.readFileSync(path.join(adminSrc, "classic/config.yml"), "utf8")
+      .replaceAll("__REPO__", repo || "OWNER/REPOSITORY").replaceAll("__BRANCH__", branch).replaceAll("__SITE_URL__", SITE));
   }
 }
 

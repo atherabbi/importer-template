@@ -9,7 +9,7 @@ Every time you save a change in the admin screen, the host rebuilds the site in 
 | Folder or file | What it is |
 | --- | --- |
 | `content/` | Everything the admin screen edits: settings, products, brands, categories |
-| `admin/` | The admin screen and its layout |
+| `admin/` | The admin screen. `admin/classic/` holds a backup editor |
 | `src/` | The design (styles), the small visitor script, and the fixed interface words in English and Bangla |
 | `public/` | Files copied to the site as they are. Uploaded photos go to `public/uploads/` |
 | `build.mjs` | Turns `content/` into the finished website in `dist/` |
@@ -33,35 +33,39 @@ Every time you save a change in the admin screen, the host rebuilds the site in 
 ## C. Sign in to the admin screen
 
 1. Open `https://the-site-address/admin/`.
-2. Choose **Sign In with Token**. The screen links to GitHub's token page.
-3. Create a fine-grained token with **Contents: Read and write** on the importer's repository. If you manage many importers, choose "All repositories" so one token works for every site.
-4. Paste the token. The browser remembers it.
+2. Paste a GitHub token and press **Sign in**. The sign-in screen has a "How to get a token" guide.
+3. The token needs **Contents: Read and write** on the importer's repository. If you manage many importers, choose "All repositories" so one token works for every site.
 
-## D. Fill in the importer's content
+The browser remembers the token. It is sent to GitHub and nowhere else.
 
-Do these in the admin screen, in this order:
+## D. Work in the admin screen
 
-1. **Settings → Company and contact details:** name, logo, address, hotline, WhatsApp, email.
-2. **Settings → Colours:** the main colour and the label colour. Dark-mode colours are worked out automatically.
-3. **Settings → Show or hide sections:** switch off anything this importer does not need.
-4. **Brands** and **Categories:** delete the samples and add the real ones.
-5. **Products:** delete the samples and add the real ones. A product without a photo shows a drawing of its pack.
-6. **Settings → Home page text:** headline, introduction and the points in each section. Clear the notice bar text or switch the notice bar off.
+Nothing you change is on the website until you press **Publish**. Changes collect in the yellow bar at the bottom, where you can review, undo or discard them. Publishing saves everything in one step, then shows "Building" and finally "Published" once the live site has the changes.
+
+- **Dashboard:** what needs attention (missing address, logo, photos, descriptions) with a Fix button for each.
+- **Products, Brands, Categories:** the catalogue. Switches in the product list show or hide a product and put it on the home page.
+- **Home page:** the words in each section, with a switch to hide the section.
+- **Show or hide:** every switch in one place.
+- **Company, Colours, Search engines, Inquiry form:** settings for the whole site.
+
+For a new importer, work through the "Needs attention" list on the dashboard, then replace the sample brands, categories and products.
+
+A simpler backup editor stays available at `/admin/classic/` in case the main admin screen ever fails to load.
 
 ### What you can show or hide
 
-Notice bar, home-page search box, importer label picture, "Check a pack", brands, products on the home page, "For doctors", the composition table, "For pharmacies", the inquiry form, footer contact details, the disclaimer, prices, registration numbers, the whole Bangla version, and any single product ("Show on website").
+Notice bar, home-page search box, importer label picture, "Check a pack", brands, products on the home page, "For doctors", the composition table, "For pharmacies", the inquiry form, footer contact details, the disclaimer, prices, registration numbers, the whole Bangla version, and any single product.
 
 ## E. Connect the importer's domain
 
 1. In Cloudflare or Netlify, add the importer's domain to the project (Custom domains) and follow the DNS steps shown there.
-2. In the admin screen, open **Settings → Search engines and languages** and enter the **Website address**, for example `https://www.acme-pharma.com`. The sitemap and all search-engine links use this address, so do not skip it.
+2. In the admin screen, open **Search engines** and enter the **Website address**, for example `https://www.acme-pharma.com`. The sitemap and all search-engine links use this address, so do not skip it.
 
 ## F. Tell the search engines (once per importer)
 
 1. Open Google Search Console and add the domain as a property.
 2. Choose the **HTML tag** method. Copy only the code inside `content="..."`.
-3. Paste it in the admin screen under **Settings → Search engines and languages → Google Search Console verification code**. Save and wait a minute.
+3. Paste it in the admin screen under **Search engines → Google Search Console code**, then publish.
 4. Back in Search Console, press **Verify**, then open **Sitemaps** and submit `sitemap.xml`.
 5. For Bing, open Bing Webmaster Tools and choose **Import from Google Search Console**.
 
@@ -71,8 +75,8 @@ After this, Google re-reads the sitemap on its own. New and changed products are
 
 A site made of plain files cannot send email by itself, so the form works in one of two ways:
 
-- **By email:** get a free access key at web3forms.com using the importer's email address, and paste it in **Settings → Inquiry form**. Inquiries then arrive in that inbox.
-- **By WhatsApp:** leave the key empty and fill in the WhatsApp number under Company details. The visitor gets a "Send on WhatsApp" button with the inquiry already written.
+- **By email:** get a free access key at web3forms.com using the importer's email address, and paste it in **Inquiry form**. Inquiries then arrive in that inbox.
+- **By WhatsApp:** leave the key empty and fill in the WhatsApp number. The visitor gets a "Send on WhatsApp" button with the inquiry already written.
 
 ## What the build produces for search engines
 
