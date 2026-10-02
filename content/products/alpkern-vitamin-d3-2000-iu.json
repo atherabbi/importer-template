@@ -1,0 +1,24 @@
+{
+  "name_en": "Vitamin D3 2000 IU",
+  "name_bn": "ভিটামিন ডি৩ ২০০০ আইইউ",
+  "brand": "alpkern",
+  "category": "food-supplements",
+  "image": "",
+  "pack_shape": "bottle",
+  "pack_en": "90 tablets",
+  "pack_bn": "৯০টি ট্যাবলেট",
+  "composition": [
+    "Cholecalciferol 50 µg (2000 IU)"
+  ],
+  "description_en": "Daily vitamin D for adults who get little sun.",
+  "description_bn": "যাঁরা রোদে কম থাকেন, সেই প্রাপ্তবয়স্কদের জন্য প্রতিদিনের ভিটামিন ডি।",
+  "usage_en": "1 tablet a day with food.",
+  "usage_bn": "দিনে ১টি ট্যাবলেট, খাবারের সঙ্গে।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-002",
+  "mrp": 980,
+  "featured": true,
+  "published": true,
+  "order": 2
+}

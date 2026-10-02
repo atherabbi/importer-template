@@ -1,0 +1,25 @@
+{
+  "name_en": "Hyaluronic Acid Serum 2%",
+  "name_bn": "হায়ালুরনিক অ্যাসিড সিরাম ২%",
+  "brand": "calmira",
+  "category": "dermocosmetics",
+  "image": "",
+  "pack_shape": "dropper",
+  "pack_en": "30 ml",
+  "pack_bn": "৩০ মি.লি.",
+  "composition": [
+    "Sodium hyaluronate 2%",
+    "Panthenol (vitamin B5)"
+  ],
+  "description_en": "Water-based hydrating serum for dry and dehydrated skin.",
+  "description_bn": "শুষ্ক ও পানিশূন্য ত্বকের জন্য পানিভিত্তিক হাইড্রেটিং সিরাম।",
+  "usage_en": "3 to 4 drops on damp skin, morning and night.",
+  "usage_bn": "ভেজা ত্বকে ৩–৪ ফোঁটা, সকালে ও রাতে।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-008",
+  "mrp": 1950,
+  "featured": true,
+  "published": true,
+  "order": 8
+}

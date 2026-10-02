@@ -1,0 +1,26 @@
+{
+  "name_en": "Vitamin C Serum 15%",
+  "name_bn": "ভিটামিন সি সিরাম ১৫%",
+  "brand": "hanbit-lab",
+  "category": "dermocosmetics",
+  "image": "",
+  "pack_shape": "dropper",
+  "pack_en": "30 ml",
+  "pack_bn": "৩০ মি.লি.",
+  "composition": [
+    "L-ascorbic acid 15%",
+    "Ferulic acid",
+    "Vitamin E"
+  ],
+  "description_en": "Antioxidant serum for dull skin and uneven tone.",
+  "description_bn": "নিষ্প্রভ ত্বক ও অসম রঙের জন্য অ্যান্টিঅক্সিডেন্ট সিরাম।",
+  "usage_en": "4 to 5 drops in the morning, followed by sunscreen.",
+  "usage_bn": "সকালে ৪–৫ ফোঁটা, এরপর সানস্ক্রিন লাগান।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-012",
+  "mrp": 2650,
+  "featured": true,
+  "published": true,
+  "order": 12
+}

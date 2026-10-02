@@ -1,0 +1,26 @@
+{
+  "name_en": "Probiotic 10 Billion CFU",
+  "name_bn": "প্রোবায়োটিক ১০ বিলিয়ন সিএফইউ",
+  "brand": "alpkern",
+  "category": "food-supplements",
+  "image": "",
+  "pack_shape": "bottle",
+  "pack_en": "30 capsules",
+  "pack_bn": "৩০টি ক্যাপসুল",
+  "composition": [
+    "Lactobacillus rhamnosus GG",
+    "Bifidobacterium lactis",
+    "Total 10 × 10⁹ CFU"
+  ],
+  "description_en": "Two well-studied strains in a delayed-release capsule.",
+  "description_bn": "ডিলেইড-রিলিজ ক্যাপসুলে বহুল গবেষিত দুটি স্ট্রেইন।",
+  "usage_en": "1 capsule a day before breakfast.",
+  "usage_bn": "দিনে ১টি ক্যাপসুল, সকালের নাশতার আগে।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-004",
+  "mrp": 1650,
+  "featured": true,
+  "published": true,
+  "order": 4
+}

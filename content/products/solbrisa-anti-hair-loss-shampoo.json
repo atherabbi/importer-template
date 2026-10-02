@@ -1,0 +1,26 @@
+{
+  "name_en": "Anti-Hair-Loss Shampoo",
+  "name_bn": "চুল পড়া রোধী শ্যাম্পু",
+  "brand": "solbrisa",
+  "category": "dermocosmetics",
+  "image": "",
+  "pack_shape": "pump",
+  "pack_en": "250 ml",
+  "pack_bn": "২৫০ মি.লি.",
+  "composition": [
+    "Caffeine",
+    "Biotin",
+    "Panthenol"
+  ],
+  "description_en": "Gentle shampoo for thinning hair, suitable for frequent washing.",
+  "description_bn": "পাতলা হয়ে আসা চুলের জন্য মৃদু শ্যাম্পু, ঘন ঘন ব্যবহারের উপযোগী।",
+  "usage_en": "Leave on the scalp for 2 minutes, then rinse.",
+  "usage_bn": "মাথার ত্বকে ২ মিনিট রেখে ধুয়ে ফেলুন।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-011",
+  "mrp": 1750,
+  "featured": false,
+  "published": true,
+  "order": 11
+}

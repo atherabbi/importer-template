@@ -1,0 +1,16 @@
+{
+  "notice_bar": true,
+  "hero_search": true,
+  "hero_label": true,
+  "check_pack": true,
+  "brands": true,
+  "featured_products": true,
+  "doctors": true,
+  "composition_table": true,
+  "pharmacies": true,
+  "inquiry_form": true,
+  "contact": true,
+  "disclaimer": true,
+  "show_mrp": true,
+  "show_reg_no": true
+}

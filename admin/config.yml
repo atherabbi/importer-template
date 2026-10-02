@@ -1,0 +1,255 @@
+# Admin screen layout. The repository name, branch and website address below are filled in automatically on every build.
+backend:
+  name: github
+  repo: __REPO__
+  branch: __BRANCH__
+
+site_url: __SITE_URL__
+display_url: __SITE_URL__
+media_folder: /public/uploads
+public_folder: /uploads
+editor:
+  preview: false
+
+collections:
+  # ------------------------------------------------------------------ products
+  - name: products
+    label: Products
+    label_singular: Product
+    description: One entry per product. Switch "Show on website" off to hide a product without deleting it.
+    folder: content/products
+    format: json
+    create: true
+    identifier_field: name_en
+    slug: "{{fields.brand}}-{{fields.name_en}}"
+    summary: "{{name_en}} ({{brand}})"
+    sortable_fields: [name_en, brand, category, order]
+    fields:
+      - { name: published, label: Show on website, widget: boolean, default: true }
+      - { name: featured, label: Show on home page, widget: boolean, default: false, required: false }
+      - { name: name_en, label: Product name (English), widget: string }
+      - { name: name_bn, label: Product name (Bangla), widget: string, required: false }
+      - name: brand
+        label: Brand
+        widget: relation
+        collection: brands
+        value_field: "{{slug}}"
+        display_fields: [name]
+        search_fields: [name]
+      - name: category
+        label: Category
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        display_fields: [name_en]
+        search_fields: [name_en, name_bn]
+      - { name: image, label: Product photo, widget: image, required: false, hint: "Square photo on a plain background, at least 800 × 800 px. If empty, a drawing of the pack is shown." }
+      - name: pack_shape
+        label: Pack drawing (used when there is no photo)
+        widget: select
+        default: bottle
+        options:
+          - { label: Bottle, value: bottle }
+          - { label: Box, value: box }
+          - { label: Tube, value: tube }
+          - { label: Dropper bottle, value: dropper }
+          - { label: Pump bottle, value: pump }
+          - { label: Jar, value: jar }
+      - { name: pack_en, label: Pack size (English), widget: string, required: false, hint: "For example: 60 softgels, 50 ml" }
+      - { name: pack_bn, label: Pack size (Bangla), widget: string, required: false }
+      - name: composition
+        label: Composition
+        label_singular: ingredient
+        widget: list
+        required: false
+        field: { name: item, label: Ingredient and amount, widget: string }
+      - { name: description_en, label: Short description (English), widget: text, required: false, hint: "One or two sentences. Search engines show this under the product name." }
+      - { name: description_bn, label: Short description (Bangla), widget: text, required: false }
+      - { name: usage_en, label: How to use (English), widget: text, required: false }
+      - { name: usage_bn, label: How to use (Bangla), widget: text, required: false }
+      - { name: origin_en, label: Made in (English), widget: string, required: false, hint: "Leave empty to use the brand's country." }
+      - { name: origin_bn, label: Made in (Bangla), widget: string, required: false }
+      - { name: reg_no, label: Registration number, widget: string, required: false }
+      - { name: mrp, label: MRP in taka, widget: number, value_type: int, min: 0, required: false }
+      - { name: order, label: Position in the list, widget: number, value_type: int, required: false, hint: "Smaller numbers come first." }
+
+  # ------------------------------------------------------------------ brands
+  - name: brands
+    label: Brands
+    label_singular: Brand
+    folder: content/brands
+    format: json
+    create: true
+    identifier_field: name
+    slug: "{{slug}}"
+    summary: "{{name}} ({{country_en}})"
+    fields:
+      - { name: name, label: Brand name, widget: string }
+      - { name: country_en, label: Country (English), widget: string, required: false }
+      - { name: country_bn, label: Country (Bangla), widget: string, required: false }
+      - { name: logo, label: Brand logo, widget: image, required: false }
+      - { name: description_en, label: About the brand (English), widget: text, required: false }
+      - { name: description_bn, label: About the brand (Bangla), widget: text, required: false }
+      - { name: order, label: Position in the list, widget: number, value_type: int, required: false }
+
+  # ------------------------------------------------------------------ categories
+  - name: categories
+    label: Categories
+    label_singular: Category
+    folder: content/categories
+    format: json
+    create: true
+    identifier_field: name_en
+    slug: "{{slug}}"
+    summary: "{{name_en}}"
+    fields:
+      - { name: name_en, label: Category name (English), widget: string }
+      - { name: name_bn, label: Category name (Bangla), widget: string, required: false }
+      - { name: description_en, label: Description (English), widget: text, required: false }
+      - { name: description_bn, label: Description (Bangla), widget: text, required: false }
+      - { name: color, label: Tag colour, widget: color, required: false }
+      - { name: order, label: Position in the list, widget: number, value_type: int, required: false }
+
+  # ------------------------------------------------------------------ settings
+  - name: settings
+    label: Settings
+    files:
+      - name: sections
+        label: Show or hide sections
+        file: content/settings/sections.json
+        fields:
+          - { name: notice_bar, label: Notice bar at the very top, widget: boolean, default: true }
+          - { name: hero_search, label: Search box on the home page, widget: boolean, default: true }
+          - { name: hero_label, label: Importer label picture on the home page, widget: boolean, default: true }
+          - { name: check_pack, label: '"Check a pack" section', widget: boolean, default: true }
+          - { name: brands, label: Brands section, widget: boolean, default: true }
+          - { name: featured_products, label: Products on the home page, widget: boolean, default: true }
+          - { name: doctors, label: '"For doctors" section', widget: boolean, default: true }
+          - { name: composition_table, label: Composition table inside "For doctors", widget: boolean, default: true }
+          - { name: pharmacies, label: '"For pharmacies" section', widget: boolean, default: true }
+          - { name: inquiry_form, label: Inquiry form inside "For pharmacies", widget: boolean, default: true }
+          - { name: contact, label: Contact details in the footer, widget: boolean, default: true }
+          - { name: disclaimer, label: Disclaimer text in the footer, widget: boolean, default: true }
+          - { name: show_mrp, label: Show prices (MRP), widget: boolean, default: true }
+          - { name: show_reg_no, label: Show registration numbers, widget: boolean, default: true }
+
+      - name: company
+        label: Company and contact details
+        file: content/settings/company.json
+        fields:
+          - { name: name, label: Company name (short), widget: string }
+          - { name: legal_name, label: Full legal name, widget: string, required: false }
+          - { name: logo, label: Logo, widget: image, required: false, hint: "If empty, the company name is shown as text." }
+          - { name: city_en, label: City (English), widget: string, required: false }
+          - { name: city_bn, label: City (Bangla), widget: string, required: false }
+          - { name: address_en, label: Office address (English), widget: string, required: false }
+          - { name: address_bn, label: Office address (Bangla), widget: string, required: false }
+          - { name: phone, label: Hotline number, widget: string, required: false }
+          - { name: whatsapp, label: WhatsApp number, widget: string, required: false, hint: "With country code, for example 8801712345678. Inquiries can be sent to this number." }
+          - { name: email, label: Email, widget: string, required: false }
+          - { name: hours_en, label: Office hours (English), widget: string, required: false }
+          - { name: hours_bn, label: Office hours (Bangla), widget: string, required: false }
+
+      - name: design
+        label: Colours
+        file: content/settings/design.json
+        fields:
+          - { name: primary, label: Main colour, widget: color, hint: "Buttons, links and highlights. Dark-mode colours are worked out automatically." }
+          - { name: accent, label: Label colour, widget: color, hint: "The importer label picture and small accents." }
+
+      - name: site
+        label: Search engines and languages
+        file: content/settings/site.json
+        fields:
+          - { name: site_url, label: Website address, widget: string, required: false, hint: "For example https://www.company.com. The sitemap and all search-engine links use this address." }
+          - { name: enable_bangla, label: Bangla version of the site, widget: boolean, default: true }
+          - name: default_language
+            label: Main language
+            widget: select
+            default: en
+            options:
+              - { label: English, value: en }
+              - { label: Bangla, value: bn }
+          - { name: meta_description_en, label: Site description for search results (English), widget: text, required: false, hint: "About 150 characters." }
+          - { name: meta_description_bn, label: Site description for search results (Bangla), widget: text, required: false }
+          - { name: share_image, label: Picture shown when the site is shared, widget: image, required: false, hint: "1200 × 630 px works best on Facebook and WhatsApp." }
+          - { name: google_verification, label: Google Search Console verification code, widget: string, required: false, hint: "Only the code from the HTML tag method, not the whole tag." }
+          - { name: bing_verification, label: Bing Webmaster verification code, widget: string, required: false }
+
+      - name: inquiry
+        label: Inquiry form
+        file: content/settings/inquiry.json
+        fields:
+          - { name: access_key, label: Web3Forms access key, widget: string, required: false, hint: "Get a free key at web3forms.com using the importer's email. With a key, inquiries arrive by email. Without one, visitors send the inquiry on WhatsApp." }
+          - { name: subject, label: Email subject, widget: string, required: false }
+
+      - name: home
+        label: Home page text
+        file: content/settings/home.json
+        fields:
+          - { name: notice_en, label: Notice bar (English), widget: string, required: false }
+          - { name: notice_bn, label: Notice bar (Bangla), widget: string, required: false }
+          - { name: eyebrow_en, label: Small line above the headline (English), widget: string, required: false }
+          - { name: eyebrow_bn, label: Small line above the headline (Bangla), widget: string, required: false }
+          - { name: headline_en, label: Headline (English), widget: string }
+          - { name: headline_bn, label: Headline (Bangla), widget: string, required: false }
+          - { name: intro_en, label: Introduction (English), widget: text, required: false }
+          - { name: intro_bn, label: Introduction (Bangla), widget: text, required: false }
+          - name: label
+            label: Importer label picture
+            widget: object
+            collapsed: true
+            fields:
+              - { name: reg_no, label: Registration number, widget: string, required: false }
+              - { name: batch, label: Batch, widget: string, required: false }
+              - { name: mfg, label: Manufacture date, widget: string, required: false }
+              - { name: exp, label: Expiry date, widget: string, required: false }
+              - { name: origin, label: Country of origin, widget: string, required: false }
+              - { name: mrp, label: MRP in taka, widget: number, value_type: int, required: false }
+          - { name: label_caption_en, label: Text under the label (English), widget: string, required: false }
+          - { name: label_caption_bn, label: Text under the label (Bangla), widget: string, required: false }
+          - { name: check_heading_en, label: '"Check a pack" heading (English)', widget: string, required: false }
+          - { name: check_heading_bn, label: '"Check a pack" heading (Bangla)', widget: string, required: false }
+          - { name: check_intro_en, label: '"Check a pack" introduction (English)', widget: text, required: false }
+          - { name: check_intro_bn, label: '"Check a pack" introduction (Bangla)', widget: text, required: false }
+          - name: check_items
+            label: '"Check a pack" points'
+            label_singular: point
+            widget: list
+            required: false
+            summary: "{{title_en}}"
+            fields:
+              - { name: title_en, label: Title (English), widget: string }
+              - { name: title_bn, label: Title (Bangla), widget: string, required: false }
+              - { name: text_en, label: Text (English), widget: text, required: false }
+              - { name: text_bn, label: Text (Bangla), widget: text, required: false }
+          - { name: doctors_heading_en, label: '"For doctors" heading (English)', widget: string, required: false }
+          - { name: doctors_heading_bn, label: '"For doctors" heading (Bangla)', widget: string, required: false }
+          - { name: doctors_intro_en, label: '"For doctors" introduction (English)', widget: text, required: false }
+          - { name: doctors_intro_bn, label: '"For doctors" introduction (Bangla)', widget: text, required: false }
+          - name: doctors_items
+            label: '"For doctors" points'
+            label_singular: point
+            widget: list
+            required: false
+            summary: "{{title_en}}"
+            fields:
+              - { name: title_en, label: Title (English), widget: string }
+              - { name: title_bn, label: Title (Bangla), widget: string, required: false }
+              - { name: text_en, label: Text (English), widget: text, required: false }
+              - { name: text_bn, label: Text (Bangla), widget: text, required: false }
+          - { name: pharm_heading_en, label: '"For pharmacies" heading (English)', widget: string, required: false }
+          - { name: pharm_heading_bn, label: '"For pharmacies" heading (Bangla)', widget: string, required: false }
+          - { name: pharm_intro_en, label: '"For pharmacies" introduction (English)', widget: text, required: false }
+          - { name: pharm_intro_bn, label: '"For pharmacies" introduction (Bangla)', widget: text, required: false }
+          - name: pharm_points
+            label: '"For pharmacies" points'
+            label_singular: point
+            widget: list
+            required: false
+            summary: "{{text_en}}"
+            fields:
+              - { name: text_en, label: Text (English), widget: string }
+              - { name: text_bn, label: Text (Bangla), widget: string, required: false }
+          - { name: disclaimer_en, label: Footer disclaimer (English), widget: text, required: false }
+          - { name: disclaimer_bn, label: Footer disclaimer (Bangla), widget: text, required: false }

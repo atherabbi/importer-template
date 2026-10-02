@@ -1,0 +1,26 @@
+{
+  "name_en": "Omega-3 Fish Oil 1000 mg",
+  "name_bn": "ওমেগা-৩ ফিশ অয়েল ১০০০ মি.গ্রা.",
+  "brand": "nordvik-nutrition",
+  "category": "food-supplements",
+  "image": "",
+  "pack_shape": "bottle",
+  "pack_en": "60 softgels",
+  "pack_bn": "৬০টি সফটজেল",
+  "composition": [
+    "Fish oil 1000 mg",
+    "EPA 180 mg",
+    "DHA 120 mg"
+  ],
+  "description_en": "Purified fish oil for adults who eat little oily fish.",
+  "description_bn": "যাঁরা তৈলাক্ত মাছ কম খান, সেই প্রাপ্তবয়স্কদের জন্য পরিশোধিত ফিশ অয়েল।",
+  "usage_en": "1 softgel twice a day with meals.",
+  "usage_bn": "দিনে ২ বার, খাবারের সঙ্গে ১টি সফটজেল।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-001",
+  "mrp": 1250,
+  "featured": true,
+  "published": true,
+  "order": 1
+}

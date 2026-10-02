@@ -1,0 +1,26 @@
+{
+  "name_en": "Sunscreen Fluid SPF 50+",
+  "name_bn": "সানস্ক্রিন ফ্লুইড এসপিএফ ৫০+",
+  "brand": "solbrisa",
+  "category": "dermocosmetics",
+  "image": "",
+  "pack_shape": "tube",
+  "pack_en": "50 ml",
+  "pack_bn": "৫০ মি.লি.",
+  "composition": [
+    "Broad-spectrum UVA/UVB filters",
+    "Niacinamide",
+    "Vitamin E"
+  ],
+  "description_en": "Light, non-greasy daily sunscreen for the face. Suits oily and combination skin.",
+  "description_bn": "মুখের জন্য হালকা, তেলতেলে নয় এমন প্রতিদিনের সানস্ক্রিন। তৈলাক্ত ও মিশ্র ত্বকের উপযোগী।",
+  "usage_en": "Apply 15 minutes before going out. Reapply every 2 hours.",
+  "usage_bn": "বাইরে যাওয়ার ১৫ মিনিট আগে লাগান। প্রতি ২ ঘণ্টা পরপর আবার লাগান।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-007",
+  "mrp": 1850,
+  "featured": true,
+  "published": true,
+  "order": 7
+}

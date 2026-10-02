@@ -1,0 +1,27 @@
+{
+  "name_en": "Women's Multivitamin",
+  "name_bn": "নারীদের মাল্টিভিটামিন",
+  "brand": "alpkern",
+  "category": "food-supplements",
+  "image": "",
+  "pack_shape": "bottle",
+  "pack_en": "60 tablets",
+  "pack_bn": "৬০টি ট্যাবলেট",
+  "composition": [
+    "Iron 14 mg",
+    "Folic acid 400 µg",
+    "Vitamin B12 2.5 µg",
+    "Zinc 10 mg"
+  ],
+  "description_en": "Daily vitamins and minerals with iron and folic acid.",
+  "description_bn": "আয়রন ও ফলিক অ্যাসিডসহ প্রতিদিনের ভিটামিন ও মিনারেল।",
+  "usage_en": "1 tablet a day after a meal.",
+  "usage_bn": "দিনে ১টি ট্যাবলেট, খাবারের পরে।",
+  "origin_en": "",
+  "origin_bn": "",
+  "reg_no": "SAMPLE-006",
+  "mrp": 1100,
+  "featured": false,
+  "published": true,
+  "order": 6
+}
