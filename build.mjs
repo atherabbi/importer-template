@@ -65,7 +65,10 @@ const L = (o, key, lang) => (o && (o[`${key}_${lang}`] || o[`${key}_en`] || o[`$
 const t = (lang, key, vars = {}) => String(UI[lang]?.[key] ?? UI.en[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? "");
 const num = (n, lang) => Number(n).toLocaleString(lang === "bn" ? "bn-BD" : "en-US");
 const money = (n, lang) => "৳ " + num(n, lang);
-const u = (lang, p) => prefix(lang) + p;
+// BASE is empty on a normal domain. It is only set when the site lives in a sub-folder (for example a GitHub Pages preview).
+const BASE = (() => { try { return new URL(SITE).pathname.replace(/\/+$/, ""); } catch { return ""; } })();
+const asset = (p) => (/^https?:/.test(p) ? p : BASE + (String(p).startsWith("/") ? p : "/" + p));
+const u = (lang, p) => BASE + prefix(lang) + p;
 const abs = (lang, p) => SITE + prefix(lang) + p;
 const absAsset = (p) => (/^https?:/.test(p) ? p : SITE + (p.startsWith("/") ? p : "/" + p));
 const COMPANY = company.name || "Company name";
@@ -138,7 +141,7 @@ const SHAPES = {
   jar: '<rect class="pk-cap" x="14" y="30" width="52" height="14" rx="3"/><rect class="pk-body" x="17" y="44" width="46" height="42" rx="8"/><rect class="pk-label" x="17" y="56" width="46" height="18"/>',
 };
 const visual = (p, lang, eager) => p.image
-  ? `<img src="${esc(p.image)}" alt="${esc(brandName(p) + " " + L(p, "name", lang))}" width="480" height="480"${eager ? "" : ' loading="lazy"'}>`
+  ? `<img src="${esc(asset(p.image))}" alt="${esc(brandName(p) + " " + L(p, "name", lang))}" width="480" height="480"${eager ? "" : ' loading="lazy"'}>`
   : `<svg viewBox="0 0 80 92" aria-hidden="true">${SHAPES[p.pack_shape] || SHAPES.bottle}</svg>`;
 
 const card = (p, lang) => {
@@ -198,17 +201,17 @@ ${alternates}
 ${img ? `<meta property="og:image" content="${esc(absAsset(img))}">\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
 ${site.google_verification ? `<meta name="google-site-verification" content="${esc(site.google_verification)}">` : ""}
 ${site.bing_verification ? `<meta name="msvalidate.01" content="${esc(site.bing_verification)}">` : ""}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;600;700&family=Anek+Latin:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/assets/style.css?v=${ASSET_V}">
+<link rel="stylesheet" href="${BASE}/assets/style.css?v=${ASSET_V}">
 ${ld}
 </head>
 <body>
 ${on("notice_bar") && L(home, "notice", lang) ? `<div class="ribbon"><div class="wrap">${esc(L(home, "notice", lang))}</div></div>` : ""}
 <header class="top"><div class="wrap top-in">
-<a class="logo" href="${u(lang, "/")}">${company.logo ? `<img src="${esc(company.logo)}" alt="${esc(COMPANY)}" height="36">` : `<span class="logo-mark" aria-hidden="true"></span>${esc(COMPANY)}`}</a>
+<a class="logo" href="${u(lang, "/")}">${company.logo ? `<img src="${esc(asset(company.logo))}" alt="${esc(COMPANY)}" height="36">` : `<span class="logo-mark" aria-hidden="true"></span>${esc(COMPANY)}`}</a>
 <nav class="nav" aria-label="Main">${nav}</nav>
 ${LANGS.length > 1 ? `<div class="lang">${["en", "bn"].filter((l) => LANGS.includes(l)).map((l) => `<a href="${u(l, page.noindex ? "/" : page.path)}" lang="${l}"${l === lang ? ' aria-current="true"' : ""}>${UI[l].lang_name}</a>`).join("")}</div>` : ""}
 </div></header>
@@ -222,7 +225,7 @@ ${contact.map(([k, v]) => `<dl><dt>${k}</dt><dd>${v}</dd></dl>`).join("")}</div>
 <p>© ${new Date().getFullYear()} ${esc(String(company.legal_name || COMPANY).replace(/\.+$/, ""))}. ${t(lang, "rights")}</p></div>
 </div></footer>
 <script type="application/json" id="i18n">${JSON.stringify(i18n).replace(/</g, "\\u003c")}</script>
-<script src="/assets/app.js?v=${ASSET_V}" defer></script>
+<script src="${BASE}/assets/app.js?v=${ASSET_V}" defer></script>
 </body>
 </html>
 `;
@@ -257,7 +260,7 @@ ${on("hero_label") ? `<div class="label-wrap"><figure class="label" aria-label="
 
   if (on("brands") && brands.length) out.push(`<section class="sec band" id="brands"><div class="wrap">
 <div class="sec-head"><h2>${t(lang, "brands_h")}</h2></div>
-<div class="brands">${brands.map((b) => `<a class="brand-chip" href="${u(lang, `/brands/${b.slug}/`)}">${b.logo ? `<img src="${esc(b.logo)}" alt="" height="28" loading="lazy">` : ""}<b>${esc(b.name)}</b><span>${esc(L(b, "country", lang))}</span></a>`).join("")}</div>
+<div class="brands">${brands.map((b) => `<a class="brand-chip" href="${u(lang, `/brands/${b.slug}/`)}">${b.logo ? `<img src="${esc(asset(b.logo))}" alt="" height="28" loading="lazy">` : ""}<b>${esc(b.name)}</b><span>${esc(L(b, "country", lang))}</span></a>`).join("")}</div>
 </div></section>`);
 
   if (on("featured_products") && shown.length) out.push(`<section class="sec" id="products"><div class="wrap">
