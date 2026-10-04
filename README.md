@@ -28,6 +28,7 @@ Every time you save a change in the admin screen, the host rebuilds the site in 
 2. Put it online with one of these:
    - **Cloudflare:** Workers & Pages → Create → Pages → Connect to Git → pick the repository. Build command: `node build.mjs`. Build output directory: `dist`. Save and deploy.
    - **Netlify:** Add new site → Import an existing project → GitHub → pick the repository. The build settings are read from `netlify.toml`.
+   - **GitHub Pages (temporary, no new account):** the repository must be public. In the new repository open Settings → Secrets and variables → Actions → Variables and add `GITHUB_PAGES_PREVIEW` with the value `on`. Then open Settings → Pages and set Source to GitHub Actions. This address is kept out of Google on purpose; move to Cloudflare or Netlify with the real domain before launch.
 3. After about a minute the site is live at the temporary address the host gives you.
 
 ## C. Sign in to the admin screen
@@ -46,7 +47,7 @@ Nothing you change is on the website until you press **Publish**. Changes collec
 - **Products, Brands, Categories:** the catalogue. Switches in the product list show or hide a product and put it on the home page.
 - **Home page:** the words in each section, with a switch to hide the section.
 - **Show or hide:** every switch in one place.
-- **Company, Colours, Search engines, Inquiry form:** settings for the whole site.
+- **Company, Colours, Search engines, Inquiry form:** settings for the whole site. Company also holds the logo, the option to show the company name beside it, and the browser tab icon.
 
 For a new importer, work through the "Needs attention" list on the dashboard, then replace the sample brands, categories and products.
 

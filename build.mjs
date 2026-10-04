@@ -42,6 +42,7 @@ const on = (key) => sections[key] !== false; // every section is shown unless sw
 const brands = loadDir("content/brands").sort(byOrder);
 const categories = loadDir("content/categories").sort(byOrder);
 const products = loadDir("content/products").filter((p) => p.published !== false).sort(byOrder);
+const HAS_PRICES = on("show_mrp") && products.some((p) => p.mrp);
 const brandBy = Object.fromEntries(brands.map((b) => [b.slug, b]));
 const catBy = Object.fromEntries(categories.map((c) => [c.slug, c]));
 for (const p of products) {
@@ -56,7 +57,9 @@ const defLang = bnOn && site.default_language === "bn" ? "bn" : "en";
 const LANGS = bnOn ? [defLang, defLang === "en" ? "bn" : "en"] : ["en"];
 const prefix = (lang) => (lang === defLang ? "" : "/" + lang);
 
-let SITE = String(site.site_url || process.env.URL || process.env.CF_PAGES_URL || "").trim().replace(/\/+$/, "");
+// A preview deployment (PREVIEW_URL) is served from its own address and is kept out of search engines.
+const PREVIEW = String(process.env.PREVIEW_URL || "").trim();
+let SITE = String(PREVIEW || site.site_url || process.env.URL || process.env.CF_PAGES_URL || "").trim().replace(/\/+$/, "");
 if (!SITE) { SITE = "https://example.com"; warn("No website address set yet (Settings → Search engines → Website address). Using https://example.com in the sitemap."); }
 if (!/^https?:\/\//.test(SITE)) SITE = "https://" + SITE;
 
@@ -165,7 +168,7 @@ function layout(lang, page, r) {
   const title = r.title;
   const desc = clip(r.desc || L(site, "meta_description", lang));
   const img = r.image || site.share_image || company.logo || "";
-  const alternates = page.noindex || LANGS.length < 2 ? "" :
+  const alternates = page.noindex || PREVIEW || LANGS.length < 2 ? "" :
     LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${abs(l, page.path)}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${abs(defLang, page.path)}">`;
   const nav = [
     [u(lang, "/products/"), "nav_products", true],
@@ -190,7 +193,7 @@ function layout(lang, page, r) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-${page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
+${page.noindex || PREVIEW ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
 ${alternates}
 <meta property="og:type" content="${r.ogType || "website"}">
 <meta property="og:site_name" content="${esc(COMPANY)}">
@@ -201,7 +204,7 @@ ${alternates}
 ${img ? `<meta property="og:image" content="${esc(absAsset(img))}">\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
 ${site.google_verification ? `<meta name="google-site-verification" content="${esc(site.google_verification)}">` : ""}
 ${site.bing_verification ? `<meta name="msvalidate.01" content="${esc(site.bing_verification)}">` : ""}
-<link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
+${company.icon ? `<link rel="icon" href="${esc(asset(company.icon))}">` : `<link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">`}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;600;700&family=Anek+Latin:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap">
@@ -211,7 +214,7 @@ ${ld}
 <body>
 ${on("notice_bar") && L(home, "notice", lang) ? `<div class="ribbon"><div class="wrap">${esc(L(home, "notice", lang))}</div></div>` : ""}
 <header class="top"><div class="wrap top-in">
-<a class="logo" href="${u(lang, "/")}">${company.logo ? `<img src="${esc(asset(company.logo))}" alt="${esc(COMPANY)}" height="36">` : `<span class="logo-mark" aria-hidden="true"></span>${esc(COMPANY)}`}</a>
+<a class="logo" href="${u(lang, "/")}">${company.logo ? `<img src="${esc(asset(company.logo))}" alt="${esc(COMPANY)}" height="48">${company.logo_with_name ? `<span>${esc(COMPANY)}</span>` : ""}` : `<span class="logo-mark" aria-hidden="true"></span>${esc(COMPANY)}`}</a>
 <nav class="nav" aria-label="Main">${nav}</nav>
 ${LANGS.length > 1 ? `<div class="lang">${["en", "bn"].filter((l) => LANGS.includes(l)).map((l) => `<a href="${u(l, page.noindex ? "/" : page.path)}" lang="${l}"${l === lang ? ' aria-current="true"' : ""}>${UI[l].lang_name}</a>`).join("")}</div>` : ""}
 </div></header>
@@ -264,7 +267,7 @@ ${on("hero_label") ? `<div class="label-wrap"><figure class="label" aria-label="
 </div></section>`);
 
   if (on("featured_products") && shown.length) out.push(`<section class="sec" id="products"><div class="wrap">
-<div class="sec-head"><h2>${t(lang, "featured_h")}</h2>${on("show_mrp") ? `<p>${t(lang, "catalogue_mrp")}</p>` : ""}</div>
+<div class="sec-head"><h2>${t(lang, "featured_h")}</h2>${HAS_PRICES ? `<p>${t(lang, "catalogue_mrp")}</p>` : ""}</div>
 ${gridOf(shown, lang)}
 <p class="more"><a class="btn" href="${u(lang, "/products/")}">${t(lang, "view_all")}</a></p>
 </div></section>`);
@@ -335,8 +338,8 @@ function cataloguePage(lang) {
   return {
     title: `${t(lang, "catalogue_h")} | ${COMPANY}`, desc: t(lang, "catalogue_desc", { company: COMPANY }),
     body: `${crumbs(lang, items)}<section class="sec" style="padding-top:20px"><div class="wrap">
-<div class="sec-head"><h1>${t(lang, "catalogue_h")}</h1><p>${on("show_mrp") ? t(lang, "catalogue_mrp") : t(lang, "catalogue_p")}</p></div>
-${filterBar(lang, products)}</div></section>`,
+<div class="sec-head"><h1>${t(lang, "catalogue_h")}</h1><p>${HAS_PRICES ? t(lang, "catalogue_mrp") : t(lang, "catalogue_p")}</p></div>
+${products.length ? filterBar(lang, products) : `<div class="empty"><p>${t(lang, "no_products")}</p></div>`}</div></section>`,
     jsonld: [crumbLd(lang, items)],
   };
 }
@@ -367,13 +370,13 @@ function productPage(lang, p) {
   const more = products.filter((x) => x.brand === p.brand && x.slug !== p.slug).slice(0, 4);
   const full = [brandName(p), name].filter(Boolean).join(" ");
   const ld = {
-    "@context": "https://schema.org", "@type": "Product", name: full, description: L(p, "description", lang) || undefined, url: abs(lang, `/products/${p.slug}/`),
+    "@context": "https://schema.org", "@type": "Product", name, description: L(p, "description", lang) || undefined, url: abs(lang, `/products/${p.slug}/`),
     image: p.image ? absAsset(p.image) : undefined, brand: b ? { "@type": "Brand", name: b.name } : undefined, category: c ? L(c, "name", lang) : undefined,
     sku: p.reg_no || undefined, countryOfOrigin: originOf(p, "en") ? { "@type": "Country", name: originOf(p, "en") } : undefined,
     offers: on("show_mrp") && p.mrp ? { "@type": "Offer", price: String(p.mrp), priceCurrency: "BDT", availability: "https://schema.org/InStoreOnly", url: abs(lang, `/products/${p.slug}/`), seller: { "@type": "Organization", name: COMPANY } } : undefined,
   };
   return {
-    title: `${full}${L(p, "pack", lang) ? ", " + L(p, "pack", lang) : ""} | ${COMPANY}`,
+    title: [`${name}${L(p, "pack", lang) ? ", " + L(p, "pack", lang) : ""}`, brandName(p), COMPANY].filter(Boolean).join(" | "),
     desc: [L(p, "description", lang), (p.composition || []).length ? p.composition.slice(0, 3).join(", ") + "." : "", t(lang, "product_desc_tail", { company: COMPANY })].filter(Boolean).join(" "),
     image: p.image, ogType: "product",
     body: `${crumbs(lang, items)}<div class="wrap"><article class="product cat-${p.category}">
@@ -383,7 +386,7 @@ function productPage(lang, p) {
 ${L(p, "description", lang) ? `<p class="lead">${esc(L(p, "description", lang))}</p>` : ""}
 <dl class="spec">${spec.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
 <p class="note">${t(lang, "m_buy")} ${t(lang, "imported_by", { company: esc(COMPANY) })}</p>
-<div><a class="btn" href="${inquiryHref(lang, "?product=" + encodeURIComponent(full))}">${t(lang, "m_ask")}</a></div>
+<div><a class="btn" href="${inquiryHref(lang, "?product=" + encodeURIComponent(name))}">${t(lang, "m_ask")}</a></div>
 </div></article></div>
 ${more.length ? `<section class="sec band"><div class="wrap"><div class="sec-head"><h2>${esc(t(lang, "more_from", { brand: brandName(p) }))}</h2></div>${gridOf(more, lang)}</div></section>` : ""}`,
     jsonld: [ld, crumbLd(lang, items)],

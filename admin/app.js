@@ -375,7 +375,7 @@
       { title: "Footer disclaimer", fields: [sec("disclaimer", "Show the disclaimer"), { k: "disclaimer", t: "pairarea", label: "Disclaimer text" }] },
     ] },
     company: { file: "company", title: "Company", desc: "The importer's name, logo and contact details.", groups: [
-      { title: "Name and logo", fields: [{ k: "name", t: "text", label: "Company name", hint: "The short name shown in the header." }, { k: "legal_name", t: "text", label: "Full legal name" }, { k: "logo", t: "image", label: "Logo", none: "No logo", hint: "Without a logo, the company name is shown as text." }] },
+      { title: "Name and logo", fields: [{ k: "name", t: "text", label: "Company name", hint: "The short name shown in the header." }, { k: "legal_name", t: "text", label: "Full legal name" }, { k: "logo", t: "image", label: "Logo", none: "No logo", hint: "Without a logo, the company name is shown as text." }, { k: "logo_with_name", t: "bool", def: false, label: "Show the company name beside the logo", hint: "For a logo that is a symbol, or is hard to read when small." }, { k: "icon", t: "image", label: "Browser tab icon", none: "No icon", hint: "A small square picture. Without one, a plain cross in the main colour is used." }] },
       { title: "Contact", fields: [{ k: "phone", t: "text", label: "Hotline number" }, { k: "whatsapp", t: "text", label: "WhatsApp number", hint: "With country code, for example 8801712345678." }, { k: "email", t: "text", label: "Email" }, { k: "hours", t: "pair", label: "Office hours" }] },
       { title: "Address", fields: [{ k: "city", t: "pair", label: "City" }, { k: "address", t: "pair", label: "Office address" }] },
     ] },

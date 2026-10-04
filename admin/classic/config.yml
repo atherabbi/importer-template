@@ -140,6 +140,8 @@ collections:
           - { name: name, label: Company name (short), widget: string }
           - { name: legal_name, label: Full legal name, widget: string, required: false }
           - { name: logo, label: Logo, widget: image, required: false, hint: "If empty, the company name is shown as text." }
+          - { name: logo_with_name, label: Show the company name beside the logo, widget: boolean, default: false, required: false }
+          - { name: icon, label: Browser tab icon, widget: image, required: false, hint: "A small square picture." }
           - { name: city_en, label: City (English), widget: string, required: false }
           - { name: city_bn, label: City (Bangla), widget: string, required: false }
           - { name: address_en, label: Office address (English), widget: string, required: false }

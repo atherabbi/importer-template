@@ -1,5 +1,6 @@
-# Test copy of the template on GitHub Pages.
-# Runs only in the template repository, so importer sites made from this template are not affected.
+# Temporary home for a site on GitHub Pages, before real hosting and a domain are connected.
+# Built as a preview: pages carry a noindex tag so search engines wait for the real address.
+# Runs in the template repository, and in any site where the repository variable GITHUB_PAGES_PREVIEW is set to "on".
 name: Preview on GitHub Pages
 on:
   push:
@@ -14,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
-    if: github.repository == 'atherabbi/importer-template'
+    if: github.repository == 'atherabbi/importer-template' || vars.GITHUB_PAGES_PREVIEW == 'on'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -31,7 +32,7 @@ jobs:
       - name: Build the site
         run: node build.mjs
         env:
-          URL: ${{ steps.pages.outputs.base_url }}
+          PREVIEW_URL: ${{ steps.pages.outputs.base_url }}
           CMS_REPO: ${{ github.repository }}
       - uses: actions/upload-pages-artifact@v3
         with:

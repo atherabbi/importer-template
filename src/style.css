@@ -24,7 +24,9 @@ button,input,select,textarea{font:inherit; color:inherit}
 .top{position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--line)}
 .top-in{display:flex; flex-wrap:wrap; align-items:center; gap:10px 24px; padding-block:12px}
 .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:1.2rem; color:var(--ink); text-decoration:none; margin-right:auto}
-.logo img{height:36px; width:auto; display:block}
+.logo img{height:48px; width:auto; max-width:min(250px,52vw); object-fit:contain; object-position:left center; display:block}
+@media (prefers-color-scheme:dark){ .logo img{background:#fff; padding:4px 8px; border-radius:7px; box-sizing:border-box} }
+@media (max-width:520px){ .logo{font-size:1.05rem} .logo img{height:42px} }
 .logo-mark{width:30px; height:30px; border-radius:8px; background:var(--primary); position:relative; flex:none}
 .logo-mark::before,.logo-mark::after{content:""; position:absolute; background:var(--primary-ink); border-radius:2px}
 .logo-mark::before{left:13px; top:7px; width:4px; height:16px}
@@ -101,7 +103,7 @@ html[lang="bn"] .eyebrow{letter-spacing:0; font-size:.9rem}
 .card:hover{transform:translateY(-2px); border-color:var(--primary)}
 .card-vis{background:var(--tint); display:grid; place-items:center; padding:16px; position:relative; min-height:132px}
 .card-vis svg{width:84px; height:100px}
-.card-vis img{width:132px; height:132px; object-fit:contain; display:block}
+.card-vis img{width:min(100%,184px); height:auto; aspect-ratio:1 / 1; object-fit:contain; display:block}
 .pk-body{fill:var(--surface); stroke:var(--ink); stroke-width:1.5}
 .pk-cap{fill:var(--ink)}
 .pk-label{fill:var(--cat,var(--primary))}
@@ -117,7 +119,7 @@ html[lang="bn"] .card-name{line-height:1.45}
 .more{margin-top:24px}
 @media (max-width:520px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
-  .card-vis{padding:26px 10px 10px; min-height:0} .card-vis svg{width:64px; height:76px} .card-vis img{width:96px; height:96px}
+  .card-vis{padding:26px 10px 10px; min-height:0} .card-vis svg{width:64px; height:76px} .card-vis img{width:min(100%,140px)}
   .card-body{padding:10px 10px 8px} .card-name{font-size:.98rem; overflow-wrap:anywhere}
   .card-strip{flex-wrap:wrap; padding:8px 10px; gap:2px 8px}
   .cat-tag{left:6px; top:6px; font-size:.66rem; padding:1px 7px}
